@@ -3,6 +3,9 @@
 # Store multiple students with their information
 # Each student is a dictionary inside a list
 # Each student has nested data - grades is another dictionary
+
+import json
+
 students = [
     {
         "name": "Alice Johnson",
@@ -131,6 +134,28 @@ def add_grade_to_student():
     except (ValueError, IndexError):
         print("Invalid input!")
 
+# File operations
+def save_data():
+    """Save student data to a file"""
+    try:
+        with open("students.json", "w") as file:
+            json.dump(students, file, indent=2)
+        print("Data saved successfully!")
+    except Exception as e:
+        print(f"Error saving data: {e}")
+
+def load_data():
+    """Load student data from a file"""
+    global students
+    try:
+        with open("students.json", "r") as file:
+            students = json.load(file)
+        print("Data loaded successfully!")
+    except FileNotFoundError:
+        print("No saved data found - starting fresh")
+    except Exception as e:
+        print(f"Error loading data: {e}")
+
 # Menu system
 def main_menu():
     """Main program menu"""
@@ -139,9 +164,11 @@ def main_menu():
         print("1. View all students")
         print("2. Add new student") 
         print("3. Add grade to student")
-        print("4. Exit")
+        print("4. Save data to file")
+        print("5. Load data from file")
+        print("6. Exit")
         
-        choice = input("Choose option (1-4): ")
+        choice = input("Choose option (1-6): ")
         
         if choice == "1":
             for student in students:
@@ -165,6 +192,12 @@ def main_menu():
             add_grade_to_student()
             
         elif choice == "4":
+            save_data()
+            
+        elif choice == "5":
+            load_data()
+
+        elif choice == "6":
             print("Goodbye!")
             break
             
