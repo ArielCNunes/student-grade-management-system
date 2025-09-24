@@ -111,7 +111,7 @@ def add_grade_to_student():
     print("\n=== Add Grade ===")
 
     # Show all students
-    for i, student in enumerate(students):
+    for i, student in enumerate(students): # enumerate gives index and value (e.g.: "0: Jack Shepard")
         print(f"{i}: {student['name']} (ID: {student['id']})")
     
     try:
@@ -144,7 +144,6 @@ def main_menu():
         choice = input("Choose option (1-4): ")
         
         if choice == "1":
-            # Your existing display code here
             for student in students:
                 print(f"Student: {student['name']} (ID: {student['id']})")
                 
