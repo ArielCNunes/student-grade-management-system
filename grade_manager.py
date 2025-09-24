@@ -59,11 +59,10 @@ def calculate_overall_gpa(student):
         total_points += avg
         total_subjects += 1
 
-        if (total_subjects == 0):
-            return 0
+    if total_subjects == 0:
+        return 0
         
-        return total_points / total_subjects
-    
+    return total_points / total_subjects
 
 # Call functions
 for student in students:
@@ -84,3 +83,95 @@ for student in students:
     print(f"  OVERALL GPA: {overall_gpa:.2f} ({overall_letter})")
     print("-" * 50)
     print()
+
+# Adding nre students
+def add_new_student():
+    """Add a new student to the system"""
+    print("\n=== Adding New Student ===")
+    name = input("Enter student name: ")
+
+    # Generate a simple ID
+    student_id = len(students) + 12345
+
+    # Create new object
+    new_student = {
+        "name": name,
+        "id": student_id,
+        "grades": {}
+    }
+
+    # Append to existing list and return it
+    students.append(new_student)
+    print(f"Added {name} with ID {student_id}")
+    return new_student
+
+# Add grades
+def add_grade_to_student():
+    """Add a grade to an existing student"""
+    print("\n=== Add Grade ===")
+
+    # Show all students
+    for i, student in enumerate(students):
+        print(f"{i}: {student['name']} (ID: {student['id']})")
+    
+    try:
+        choice = int(input("Choose student number: "))
+        student = students[choice]
+        
+        subject = input("Enter subject: ")
+        grade = float(input("Enter grade: "))
+        
+        # Add subject if it doesn't exist
+        if subject not in student['grades']:
+            student['grades'][subject] = []
+        
+        student['grades'][subject].append(grade)
+        print(f"Added grade {grade} in {subject} for {student['name']}")
+        
+    except (ValueError, IndexError):
+        print("Invalid input!")
+
+# Menu system
+def main_menu():
+    """Main program menu"""
+    while True:
+        print("\n=== Grade Management System ===")
+        print("1. View all students")
+        print("2. Add new student") 
+        print("3. Add grade to student")
+        print("4. Exit")
+        
+        choice = input("Choose option (1-4): ")
+        
+        if choice == "1":
+            # Your existing display code here
+            for student in students:
+                print(f"Student: {student['name']} (ID: {student['id']})")
+                
+                for subject, grades in student['grades'].items():
+                    avg = calculate_average(grades)
+                    letter = get_letter_grade(avg)
+                    print(f"  {subject}: {grades} -> Average: {avg:.1f} ({letter})")
+                
+                if student['grades']:  # Only show GPA if student has grades
+                    overall_gpa = calculate_overall_gpa(student)
+                    overall_letter = get_letter_grade(overall_gpa)
+                    print(f"  OVERALL GPA: {overall_gpa:.2f} ({overall_letter})")
+                print("-" * 50)
+                
+        elif choice == "2":
+            add_new_student()
+            
+        elif choice == "3":
+            add_grade_to_student()
+            
+        elif choice == "4":
+            print("Goodbye!")
+            break
+            
+        else:
+            print("Invalid choice!")
+
+# Run the program
+if __name__ == "__main__":
+    main_menu()
